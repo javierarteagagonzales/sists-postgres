@@ -1,0 +1,2 @@
+sudo apt-get install postgresql-plpython3-12
+CREATE EXTENSION plpython3u;
