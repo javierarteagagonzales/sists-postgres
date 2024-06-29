@@ -15,30 +15,30 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3  # Actualizado a v3
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3  # Actualizado a v3
+        uses: actions/setup-node@v3
         with:
-          node-version: '20'  # Usar Node.js 20
+          node-version: '20'
 
-      - name: Install dependencies
+      - name: Install git-summary locally
         run: |
-          npm install -g git-summary
+          npm install git-summary
 
       - name: Generate commit report
         run: |
-          git-summary > commit-report.txt
+          ./node_modules/.bin/git-summary > commit-report.txt
 
       - name: Update README.md
         run: |
-          # Lee el contenido actual del README.md
+          # Leer el contenido actual del README.md
           README_CONTENT=$(cat README.md)
 
-          # Genera el reporte de commits
+          # Generar el reporte de commits
           COMMIT_REPORT=$(cat commit-report.txt)
 
-          # Inserta el reporte en el README.md
+          # Insertar el reporte en el README.md
           echo "$README_CONTENT" | sed '/<!-- COMMIT REPORT START -->/,/<!-- COMMIT REPORT END -->/c\<!-- COMMIT REPORT START -->\n\```text\n$COMMIT_REPORT\n\```\n<!-- COMMIT REPORT END -->' > README.md
 
       - name: Commit and push changes
