@@ -1,4 +1,4 @@
-# Proyecto
+# Nombre del Proyecto
 
 Descripción del proyecto.
 
@@ -6,3 +6,5 @@ Descripción del proyecto.
 
 <!-- COMMIT REPORT START -->
 <!-- COMMIT REPORT END -->
+
+Otras secciones de tu README.md
