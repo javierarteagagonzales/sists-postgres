@@ -1,0 +1,39 @@
+name: Commit Report
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Corre todos los días a medianoche
+  push:
+    branches:
+      - main
+
+jobs:
+  generate-report:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: |
+        npm install -g git-summary
+
+    - name: Generate commit report
+      run: |
+        git-summary > commit-report.txt
+
+    - name: Commit and push report
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git add commit-report.txt
+        git commit -m 'Generate daily commit report'
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
