@@ -2,7 +2,7 @@ name: Commit Report
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Corre todos los días a medianoche
+    - cron: '0 * * * *'  # Corre cada hora
   push:
     branches:
       - main
@@ -28,12 +28,23 @@ jobs:
       run: |
         git-summary > commit-report.txt
 
-    - name: Commit and push report
+    - name: Update README.md
+      run: |
+        # Lee el contenido actual del README.md
+        README_CONTENT=$(cat README.md)
+
+        # Genera el reporte de commits
+        COMMIT_REPORT=$(cat commit-report.txt)
+
+        # Inserta el reporte en el README.md
+        echo "$README_CONTENT" | sed '/<!-- COMMIT REPORT START -->/,/<!-- COMMIT REPORT END -->/c\<!-- COMMIT REPORT START -->\n\```text\n$COMMIT_REPORT\n\```\n<!-- COMMIT REPORT END -->' > README.md
+
+    - name: Commit and push changes
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git add commit-report.txt
-        git commit -m 'Generate daily commit report'
+        git add README.md
+        git commit -m 'Update commit report in README.md'
         git push
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
