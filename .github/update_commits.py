@@ -1,8 +1,8 @@
 import requests
 
 def update_readme():
-    repo_owner = 'javierarteagagonzales'
-    repo_name = 'sists-postgres'
+    repo_owner = javierarteagagonzales
+    repo_name = sists-postgres
     api_url = f'https://api.github.com/repos/{repo_owner}/{repo_name}/commits'
 
     # Obtener los commits por autor
